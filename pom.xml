@@ -15,14 +15,37 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>3.8.1</version>
+			<version>4.12</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.easytesting</groupId>
+			<artifactId>fest-assert</artifactId>
+			<version>1.4</version>
+			<scope>test</scope>
+		</dependency>
+
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-io</artifactId>
 			<version>1.3.2</version>
 		</dependency>
+		<dependency>
+			<groupId>commons-net</groupId>
+			<artifactId>commons-net</artifactId>
+			<version>3.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-collections4</artifactId>
+			<version>4.1</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -55,7 +78,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>photo.caro.tools.MainJFrame</mainClass>
+							<mainClass>photo.caro.tools.Main</mainClass>
 						</manifest>
 					</archive>
 					<descriptorRefs>
@@ -81,7 +104,7 @@
 					<archive>
 						<manifest>
 							<addClasspath>true</addClasspath>
-							<mainClass>photo.caro.tools.MainJFrame</mainClass>
+							<mainClass>photo.caro.tools.Main</mainClass>
 							<classpathPrefix>lib/</classpathPrefix>
 						</manifest>
 					</archive>
@@ -104,7 +127,7 @@
 							<outfile>${project.build.directory}/photoscaro-tools.exe</outfile>
 							<downloadUrl>http://java.com/download</downloadUrl>
 							<classPath>
-								<mainClass>photo.caro.tools.MainJFrame</mainClass>
+								<mainClass>photo.caro.tools.Main</mainClass>
 								<preCp>anything</preCp>
 							</classPath>
 							<icon>src/main/resources//photoscaro-img-icon.ico</icon>
