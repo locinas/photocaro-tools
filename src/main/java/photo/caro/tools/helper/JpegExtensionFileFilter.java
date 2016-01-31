@@ -2,7 +2,6 @@ package photo.caro.tools.helper;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.io.FilenameFilter;
 import java.util.Arrays;
 
 import org.apache.commons.io.FilenameUtils;

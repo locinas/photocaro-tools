@@ -12,8 +12,12 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Arrays;
+import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import photo.caro.tools.ftp.FtpManager;
 import photo.caro.tools.ftp.FtpManagerException;
@@ -28,6 +32,8 @@ import photo.caro.tools.helper.DirectoryHelper;
  */
 public class AlbumManager {
 
+	/** Le manager de logs. */
+	private static final Logger LOGGER = LoggerFactory.getLogger(AlbumManager.class);
 	/** L'ensemble des noms de l'album utilisables par l'application. */
 	private AlbumNamesHelper names;
 	/** Les chemins des différents dossiers utilisables par l'application. */
@@ -81,11 +87,12 @@ public class AlbumManager {
 		galleryBuffer.close();
 		galleryBufferWriter.close();
 		galleryOutputStream.close();
-		galleryHtmlCopyFile.delete();
 		
 		// Envoie de la photo de couverture sur le FTP.
 		ftpManager.sendFile(galleryPicture, "/photos/gallerie");
 		ftpManager.sendFile(galleryHtmlFile, null);
+		LOGGER.info("Le fichier "+galleryHtmlFile.getName() +" a bien été envoyé sur le serveur ftp. Il en est de même pour la photo de "
+				+ "l'album "+galleryPicture.getName()+ " qui est dans /photos/gallerie.");
 	}
 
 	
@@ -97,7 +104,9 @@ public class AlbumManager {
 	public void createAlbum() throws FtpManagerException {
 		ftpManager.createAlbumFolder(names.getLanguagesName());
 		String remoteAlbumPath = "/photos/"+names.getLanguagesName();
-		ftpManager.sendListFile(folderHelper.listTempPicture(), remoteAlbumPath);
+		List<File> picturesToSend = folderHelper.listTempPicture();
+		ftpManager.sendListFile(picturesToSend, remoteAlbumPath);
+		LOGGER.info("L'album "+names.getLanguagesName()+" a bien été créé et contient "+picturesToSend.size()+" photos.");
 	}
 	
 	/**
@@ -138,6 +147,33 @@ public class AlbumManager {
 		phpOutputStream.close();
 		
 		ftpManager.sendFile(albumPhp, null);
+		LOGGER.info("Le fichier "+albumPhp.getName()+" a bien été envoyé sur le serveur.");
+	}
+	
+	/**
+	 * Remet le serveur ftp tel qu'il était avant la création de l'album.
+	 * 
+	 * @throws FtpManagerException Si une exception survient pendant le remplacement du gallery.html ou pendant la suppression des images ou 
+	 * du fichier php. 
+	 */
+	public void cancelAlbumCreation() throws FtpManagerException {
+		// Remettre gallery.html
+		String pathGalleryHtml = folderHelper.getTempFolder().getAbsolutePath()+File.separator+"gallery.html";
+		File galleryHtml = new File(pathGalleryHtml);
+		File galleryHtmlToDelete = galleryHtml;
+		galleryHtmlToDelete.delete();
+		File galleryHtmlSave = new File(folderHelper.getTempFolder().getAbsolutePath()+File.separator+"gallerySave.html");
+		galleryHtmlSave.renameTo(galleryHtml);
+		ftpManager.sendFile(galleryHtml, null);
+		LOGGER.info("Annulation : le fichier gallery.html est reverté.");
+		
+		// Supprimer les photos et le fichier php.
+		List<String> filesToDelete = Arrays.asList(names.getLanguagesName()+".php", "/photos/gallerie/"+names.getLanguagesName()+".jpg");
+		ftpManager.deleteFile(filesToDelete);
+		LOGGER.info("Annulation : le fichier "+names.getLanguagesName()+".php et /photos/gallerie/"+names.getLanguagesName()+".jpg ne sont pas envoyés");
+		ftpManager.deleteFolder("/photos/"+names.getLanguagesName());
+		LOGGER.info("Annulation : l'album /photos/"+names.getLanguagesName()+" n'est pas envoyé.");
+		
 	}
 	
 	private String buildBlocDiv() {
