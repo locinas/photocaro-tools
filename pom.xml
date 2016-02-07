@@ -63,6 +63,14 @@
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<!-- <version>2.4</version> -->
 				<configuration>
@@ -121,10 +129,10 @@
 								<preCp>anything</preCp>
 							</classPath>
 							<icon>src/main/resources//photoscaro-img-icon.ico</icon>
-							<jre>
-								<minVersion>1.7.0</minVersion>
-								<jdkPreference>preferJre</jdkPreference>
-							</jre>
+							<!-- <jre> -->
+							<!-- <minVersion>1.7.0</minVersion> -->
+							<!-- <jdkPreference>preferJre</jdkPreference> -->
+							<!-- </jre> -->
 							<versionInfo>
 								<fileVersion>1.0.0.0</fileVersion>
 								<txtFileVersion>${project.version}</txtFileVersion>

@@ -11,6 +11,6 @@ public class JpegExtensionFileFilter implements FileFilter {
 	@Override
 	public boolean accept(File arg0) {
 		
-		return arg0 != null && FilenameUtils.isExtension(arg0.getName(), Arrays.asList("jpg", "jpeg"));
+		return arg0 != null && FilenameUtils.isExtension(arg0.getName(), Arrays.asList("jpg", "jpeg", "JPEG", "JPG"));
 	}
 }
