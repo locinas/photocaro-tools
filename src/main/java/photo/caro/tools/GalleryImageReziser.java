@@ -19,6 +19,10 @@ import photo.caro.tools.helper.DirectoryHelper;
  * @author nicolas
  */
 public class GalleryImageReziser {
+	/** Coefficient de hauteur pour la photo de couverture d'album. */
+	private static final float REF_HEIGHT_GALLERY_IMG = 216;
+	/** Coefficient de largeur pour la photo de couverture d'album. */
+	private static final float REF_WIDTH_GALLERY_IMG = 369;
 	/** Coefficient de rognage horizontal. */
 	private static int refWidthSmallPicture = 370;
 	/** Coefficient de rognage vertical. */
@@ -76,18 +80,18 @@ public class GalleryImageReziser {
 			File workingPicture = originalPicturesList.get(0);
 			BufferedImage originalBufferedImage = ImageIO.read(workingPicture);
 			int type = originalBufferedImage.getType() == 0 ? BufferedImage.TYPE_INT_ARGB : originalBufferedImage.getType();
-			int commonCoef = calculateCoefCoverAlbumPicture(originalBufferedImage);
-			int width = 369 * commonCoef;
-			int heightPropor = originalBufferedImage.getHeight() * width / originalBufferedImage.getWidth();
+			float commonCoef = calculateCoefCoverAlbumPicture(originalBufferedImage);
+			float width = REF_WIDTH_GALLERY_IMG * commonCoef;
+			float heightPropor = (float)originalBufferedImage.getHeight() * width / (float)originalBufferedImage.getWidth();
 
-			BufferedImage resizedImage = new BufferedImage(width, heightPropor,	type);
+			BufferedImage resizedImage = new BufferedImage(Math.round(width), Math.round(heightPropor),	type);
 			Graphics2D g = resizedImage.createGraphics();
-			g.drawImage(originalBufferedImage, 0, 0, width, heightPropor, null);
+			g.drawImage(originalBufferedImage, 0, 0, Math.round(width), Math.round(heightPropor), null);
 			g.dispose();
 
-			int height = 216 * commonCoef;
-			int startY = (heightPropor - height) / 2;
-			resizedImage = resizedImage.getSubimage(0, startY, resizedImage.getWidth(), height);
+			float height = REF_HEIGHT_GALLERY_IMG * commonCoef;
+			float startY = (heightPropor - height) / (float)2;
+			resizedImage = resizedImage.getSubimage(0, Math.round(startY), resizedImage.getWidth(), Math.round(height)-10);
 			
 			albumPicture = new File(folderHelper.getSourceFolder() + File.separator + "temp"+ File.separator + names.getLanguagesName()+".jpg");
 			ImageIO.write(resizedImage, "jpg", albumPicture);
@@ -126,9 +130,9 @@ public class GalleryImageReziser {
 		}
 	}
 	
-	private int calculateCoefCoverAlbumPicture(BufferedImage originalBufferedImage) {
-		int coefW = originalBufferedImage.getWidth() / 369;
-		int coefH = originalBufferedImage.getHeight() / 216;
+	private float calculateCoefCoverAlbumPicture(BufferedImage originalBufferedImage) {
+		float coefW = (float)originalBufferedImage.getWidth() / REF_WIDTH_GALLERY_IMG;
+		float coefH = (float)originalBufferedImage.getHeight() / REF_HEIGHT_GALLERY_IMG;
 
 		if (coefH < coefW) {
 			return coefH;
