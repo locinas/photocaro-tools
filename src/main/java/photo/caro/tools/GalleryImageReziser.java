@@ -141,6 +141,7 @@ public class GalleryImageReziser {
 		}
 	}
 
+	// Teste si c'esy une image
 	private static boolean isImage(File f) throws IOException {
 		String mimetype = java.nio.file.Files.probeContentType(f.toPath());
 		String type = mimetype.split("/")[0];
