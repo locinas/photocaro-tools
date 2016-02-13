@@ -1,7 +1,7 @@
 /**
  * 
  */
-package photo.caro.tools.helper;
+package photo.caro.tools.business.helper;
 
 import org.apache.commons.lang3.StringUtils;
 

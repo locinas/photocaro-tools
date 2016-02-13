@@ -1,4 +1,4 @@
-package photo.caro.tools.ftp;
+package photo.caro.tools.business.ftp;
 
 public class FtpManagerException extends Exception {
 

@@ -4,7 +4,7 @@ import static org.fest.assertions.Assertions.assertThat;
 
 import org.junit.Test;
 
-import photo.caro.tools.helper.AlbumNamesHelper;
+import photo.caro.tools.business.helper.AlbumNamesHelper;
 
 public class AlbumNamesTest {
 	

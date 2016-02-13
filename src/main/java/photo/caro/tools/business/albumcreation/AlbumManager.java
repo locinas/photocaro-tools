@@ -1,7 +1,7 @@
 /**
  * 
  */
-package photo.caro.tools;
+package photo.caro.tools.business.albumcreation;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -19,10 +19,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import photo.caro.tools.ftp.FtpManager;
-import photo.caro.tools.ftp.FtpManagerException;
-import photo.caro.tools.helper.AlbumNamesHelper;
-import photo.caro.tools.helper.DirectoryHelper;
+import photo.caro.tools.business.ftp.FtpManager;
+import photo.caro.tools.business.ftp.FtpManagerException;
+import photo.caro.tools.business.helper.AlbumNamesHelper;
+import photo.caro.tools.business.helper.DirectoryHelper;
 
 /**
  * Classe utilisé pour la création d'un album sur le ftp de Caroline. Elle permet de modifier gallery.html, de créer 

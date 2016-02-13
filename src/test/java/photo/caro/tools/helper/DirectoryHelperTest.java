@@ -7,6 +7,8 @@ import java.io.File;
 import org.fest.assertions.Assertions;
 import org.junit.Test;
 
+import photo.caro.tools.business.helper.DirectoryHelper;
+
 public class DirectoryHelperTest {
 	
 	@Test

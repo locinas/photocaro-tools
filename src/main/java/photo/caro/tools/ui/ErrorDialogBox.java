@@ -23,6 +23,8 @@ public class ErrorDialogBox extends JDialog {
 
 	/** L'exception à afficher dans la fenêtre. */
 	private Throwable exception;
+	/** Le message d'erreur qui résume le problème. */
+	private String errorMessage;
 
 	/**
 	 * Constructeur.
@@ -30,9 +32,10 @@ public class ErrorDialogBox extends JDialog {
 	 * @param parent Le parent de cette dialog.
 	 * @param exception L'exception à afficher.
 	 */
-	public ErrorDialogBox(JFrame parent, Throwable exception) {
+	public ErrorDialogBox(JFrame parent, Throwable exception, String errorMesage) {
 		super(parent, "Putain, une erreur !");
 		this.exception = exception;
+		this.errorMessage = errorMesage;
 		
 		getContentPane().setLayout(null);
 		setSize(590, 280);
@@ -41,7 +44,7 @@ public class ErrorDialogBox extends JDialog {
 	}
 
 	private void initializeWidgets() {
-		JLabel errorMessageLabel = new JLabel("Impossible de créer ton album, Pine. Envoies moi la trace d'erreur par mail stp.");
+		JLabel errorMessageLabel = new JLabel(this.errorMessage);
 		errorMessageLabel.setBounds(10, 20, 586, 15);
 		
 		JLabel exceptionLabel = new JLabel("Trace de l'erreur :");

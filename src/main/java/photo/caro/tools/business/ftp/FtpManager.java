@@ -1,4 +1,4 @@
-package photo.caro.tools.ftp;
+package photo.caro.tools.business.ftp;
 
 import java.io.BufferedOutputStream;
 import java.io.File;

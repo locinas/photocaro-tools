@@ -1,4 +1,4 @@
-package photo.caro.tools;
+package photo.caro.tools.business.albumcreation;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -10,8 +10,8 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
-import photo.caro.tools.helper.AlbumNamesHelper;
-import photo.caro.tools.helper.DirectoryHelper;
+import photo.caro.tools.business.helper.AlbumNamesHelper;
+import photo.caro.tools.business.helper.DirectoryHelper;
 
 /**
  * Classe offrant des outils pour retailler les images à envoyer sur le site.
@@ -141,7 +141,6 @@ public class GalleryImageReziser {
 		}
 	}
 
-	// Teste si c'esy une image
 	private static boolean isImage(File f) throws IOException {
 		String mimetype = java.nio.file.Files.probeContentType(f.toPath());
 		String type = mimetype.split("/")[0];

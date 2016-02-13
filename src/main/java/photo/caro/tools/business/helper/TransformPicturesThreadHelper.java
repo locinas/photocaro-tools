@@ -1,4 +1,4 @@
-package photo.caro.tools.helper;
+package photo.caro.tools.business.helper;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -10,12 +10,12 @@ import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import photo.caro.tools.AlbumManager;
-import photo.caro.tools.GalleryImageReziser;
-import photo.caro.tools.StepTransform;
+import photo.caro.tools.business.albumcreation.AlbumManager;
+import photo.caro.tools.business.albumcreation.GalleryImageReziser;
+import photo.caro.tools.business.albumcreation.StepTransform;
+import photo.caro.tools.business.ftp.FtpManager;
+import photo.caro.tools.business.ftp.FtpManagerException;
 import photo.caro.tools.exceptions.PhotocaroException;
-import photo.caro.tools.ftp.FtpManager;
-import photo.caro.tools.ftp.FtpManagerException;
 
 /**
  * Contient la logique de transformation et d'envoie du thread lancé lors du clic sur Transformer.
