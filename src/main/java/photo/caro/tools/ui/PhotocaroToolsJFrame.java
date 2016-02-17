@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -13,6 +14,8 @@ import javax.swing.JTabbedPane;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import photo.caro.tools.business.globalvalidation.ValidationError;
+import photo.caro.tools.business.globalvalidation.Validator;
 import photo.caro.tools.business.helper.AlbumNamesHelper;
 import photo.caro.tools.business.helper.DirectoryHelper;
 import photo.caro.tools.business.helper.TransformPicturesThreadHelper;
@@ -62,9 +65,15 @@ public class PhotocaroToolsJFrame extends JFrame {
 				Thread t = new Thread(){
 			        public void run(){
 			        	try {
-			        		// TODO compléter avec l'action de valider.
-				    		JOptionPane.showMessageDialog(null, "Hey Face de pine, ton site est niquel."+System.getProperty("line.separator")+" Je ne vois pas de problème donc tu te calmes !",
+			        		Validator validator = new Validator();
+			        		List<ValidationError> errors = validator.validate();
+			        		if(errors.isEmpty()) {
+			        			JOptionPane.showMessageDialog(null, "Hey Face de pine, ton site est niquel."+System.getProperty("line.separator")+" Je ne vois pas de problème donc tu te calmes !",
 				    				"Validation terminé", JOptionPane.INFORMATION_MESSAGE);
+			        		} else {
+			        			ValidationErrorDialogBox dialog = new ValidationErrorDialogBox(PhotocaroToolsJFrame.this, errors);
+			        			dialog.setVisible(true);
+			        		}
 			        	} catch (Exception e) {
 			        		LOGGER.error("Une erreur est survenue lors de la validation du site Phot'Ô Caro.", e);
 			        		ErrorDialogBox dialog = new ErrorDialogBox(PhotocaroToolsJFrame.this, e, "Impossible de créer ton album, Pine. Envoies moi la trace d'erreur par mail stp.");

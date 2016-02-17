@@ -8,7 +8,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -293,6 +296,111 @@ public class FtpManager {
 	        }
 		}
 		
+	}
+
+	
+	/**
+	 * Regarde sur le serveur ftp si les fichiers existent.
+	 * 
+	 * @param picture La liste des fichiers avec son chemin.
+	 * @return La liste des fichiers qui n'ont pas été trouvés sur le site. Retourne une liste vide si tous les fichiers sont présents.
+	 * @throws FtpManagerException Si une erreur s'est produite pour tester l'existance des fichiers sur le serveur FTP. 
+	 */
+	public Set<String> checkFilesExists(Set<String> files) throws FtpManagerException {
+		Set<String> filesNotFound = new TreeSet<>();
+		
+		if(files != null) {
+			FTPClient ftpClient = new FTPClient();
+			try {
+				// Connection au FTP de Caroline.
+				ftpClient.connect(server, port);
+				ftpClient.login(user, pass);
+				ftpClient.enterLocalPassiveMode();
+				
+				for (String filePath : filesNotFound) {
+					InputStream inputStream = ftpClient.retrieveFileStream(filePath);
+					Integer returnCode = ftpClient.getReplyCode();
+					if (inputStream == null || returnCode == 550) {
+						filesNotFound.add(filePath);
+					}
+				}
+				
+				LOGGER.info("La présence des fichiers suivants a bien été testée sur le serveur ftp : "+files);
+			} catch (Exception ex) {
+				throw new FtpManagerException("Erreur lors du test de l'existance des fichiers suivants sur le ftp : "+files, ex);
+			} finally {
+				deconnexion(ftpClient, " Impossible de tester l'existance des fichiers "+files);
+			}
+		}
+		
+		return filesNotFound;
+	}
+	
+	/**
+	 * Vérifie qu'un ensemble de dossiers existent sur le serveur FTP.
+	 * @param directories La liste des dossier dont l'existance doit être vérifiée.
+	 * @return La liste des dossiers qui n'existent pas sur le serveur FTP. Retourne une liste vide si tous les dossiers existent.
+	 * @throws FtpManagerException Si une erreur s'est produite pour tester l'existance des dossiers sur le serveur FTP.
+	 */
+	public Set<String> checkDirectoriesExists(Set<String> directories) throws FtpManagerException {
+		Set<String> directoriesNotFound = new TreeSet<>();
+		
+		if(directories != null) {
+			FTPClient ftpClient = new FTPClient();
+	        try {
+	        	// Connection au FTP de Caroline.
+	            ftpClient.connect(server, port);
+	            ftpClient.login(user, pass);
+	            ftpClient.enterLocalPassiveMode();
+	            
+				for (String directoryPath : directoriesNotFound) {
+					ftpClient.changeWorkingDirectory("/photos/"+directoryPath);
+			        Integer returnCode = ftpClient.getReplyCode();
+			        if (returnCode == 550) {
+			            directoriesNotFound.add(directoryPath);
+			        }
+				}
+				
+				LOGGER.info("La présence des dossiers suivants a bien été testée dans /photos/ sur le serveur ftp : "+directories);
+	        } catch (Exception ex) {
+	            throw new FtpManagerException("Erreur lors du test de l'existance des dossiers suivants sur le ftp dans dans /photos/ : "+directories, ex);
+	        } finally {
+	        	deconnexion(ftpClient, " Impossible de tester l'existance des dossiers suivants dans dans /photos/ : "+directories);
+	        }
+		}
+		
+		return directoriesNotFound;
+	}
+	
+	/**
+	 * Liste les fichiers d'un dossier de /photos dans le ftp..
+	 * 
+	 * @param albumName Le nom du dossier qui est dans /photo pour lesquel les fichiers seront listés.
+	 * @return La liste des fichiers qui sont dans /photos/albumName.
+	 * @throws FtpManagerException Si une erreur survient lors de la tentative de liste des fichiers.
+	 */
+	public List<FTPFile> listFilesFromAlbum(String albumName) throws FtpManagerException {
+		List<FTPFile> fileList = new ArrayList<>();
+		
+		if(StringUtils.isNotBlank(albumName)) {
+			FTPClient ftpClient = new FTPClient();
+	        try {
+	        	// Connection au FTP de Caroline.
+	            ftpClient.connect(server, port);
+	            ftpClient.login(user, pass);
+	            ftpClient.enterLocalPassiveMode();
+	            
+				fileList.addAll(Arrays.asList(ftpClient.listFiles("/photos/"+albumName, new JpegFtpFileFilter())));
+				
+				LOGGER.info("Les fichiers de l'album "+albumName+" ont été listés.");
+	        } catch (Exception ex) {
+	            throw new FtpManagerException("Erreur lors de la liste des fichiers de l'album "+albumName, ex);
+	        } finally {
+	        	deconnexion(ftpClient, " Impossible de lister les fichiers de l'album "+albumName);
+	        }
+		}
+		
+		return fileList;
 	}
 	
 	private void deconnexion(FTPClient ftpClient, String errorMessage) throws FtpManagerException {

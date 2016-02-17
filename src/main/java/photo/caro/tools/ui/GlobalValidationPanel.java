@@ -6,7 +6,6 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JProgressBar;
 import javax.swing.JTextArea;
 
 /**
@@ -18,11 +17,7 @@ public class GlobalValidationPanel extends JPanel {
 
 	/** Le bouton pour lancer la validation. */
 	private JButton validateButton = new JButton();
-	/** Le widget qui contient le résultat en cas d'erreur. */
-	private JTextArea errorsTextArea = new JTextArea();
-	/** La barre de progression de la validation. */
-	private JProgressBar progressBar = new JProgressBar();
-	
+
 	/**
 	 * Constructeur.
 	 */
@@ -31,7 +26,6 @@ public class GlobalValidationPanel extends JPanel {
 		
 		initializeExplications();
 		initializeValidationButton();
-		initializePrgressBar();
 	}
 	
 	/**
@@ -51,13 +45,6 @@ public class GlobalValidationPanel extends JPanel {
 	 */
 	public void setValidationEnable(boolean enable) {
 		validateButton.setEnabled(enable);
-		progressBar.setVisible(!enable);
-	}
-
-	private void initializePrgressBar() {
-		progressBar.setBounds(12, 198, 428, 21);
-		progressBar.setVisible(false);
-		add(progressBar);
 	}
 
 	private void initializeExplications() {

@@ -14,6 +14,8 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class AlbumNamesHelper {
 
+	/** Le prefixe utilisé pour le nom des fichiers miniatures. */
+	public static final String PREFIX_SMALL_IMAGE = "small";
 	/** Le nom humain de l'album. */
 	private String humanName;
 	/** Le nom de l'abulm utilisé dans les fichiers php ou html. */
@@ -32,7 +34,7 @@ public class AlbumNamesHelper {
 		if (StringUtils.isNotBlank(humanName)) {
 			this.humanName = humanName;
 			this.languagesName = transformToLanguagesName(humanName);
-			this.smallNamePattern = "small" + languagesName.substring(0,1).toUpperCase() + languagesName.substring(1); 
+			this.smallNamePattern = PREFIX_SMALL_IMAGE + languagesName.substring(0,1).toUpperCase() + languagesName.substring(1); 
 		}
 	}
 

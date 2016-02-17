@@ -6,9 +6,11 @@ package photo.caro.tools.business.albumcreation;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -119,13 +121,12 @@ public class AlbumManager {
 	public void creatAlbumPhpFile() throws FtpManagerException, IOException, URISyntaxException {
 		// Créé le fichier php.
 		ClassLoader classLoad = getClass().getClassLoader();
-		File templatePhp = new File(new URI(classLoad.getResource("template.php").toString()));
 		File albumPhp = new File(folderHelper.getTempFolder().getAbsolutePath()+File.separator+names.getLanguagesName()+".php");
 		albumPhp.createNewFile();
 		
 		// Initialisation des buffers de lecture et d'écriture.
-		FileReader templateReader = new FileReader(templatePhp);
-		BufferedReader templateBufferR = new BufferedReader(templateReader);
+		InputStreamReader isr = new InputStreamReader(classLoad.getResourceAsStream("template.php"));
+		BufferedReader templateBufferR = new BufferedReader(isr);
 		FileOutputStream phpOutputStream = new FileOutputStream(albumPhp);
 		BufferedWriter phpBufferW = new BufferedWriter(new OutputStreamWriter(phpOutputStream));
 		
